@@ -1,20 +1,17 @@
 pipeline {
     agent any
-
     stages {
-        stage('Check Files') {
+        stage('Unit Test') {
             steps {
-                echo 'Checking what Jenkins downloaded...'
-                // This lists the files so we can see if math-utils.py exists
-                sh 'ls -la'
+                echo 'Testing the code...'
+                // If this fails, Jenkins stops immediately
+                sh 'python3 test_math.py'
             }
         }
-        
-        stage('Execute Python') {
+        stage('Execute Main') {
             steps {
-                echo 'Running the math script...'
-                // Make sure the filename here matches exactly what is in your GitHub repo
-                sh 'python3 math-utils.py'
+                echo 'Test passed! Now running the main script...'
+                sh 'python3 math_utils.py'
             }
         }
     }
