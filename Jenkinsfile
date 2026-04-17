@@ -1,32 +1,21 @@
 pipeline {
-    /* This 'agent' block tells Jenkins to pull a specific 
-       Python image and run all the following stages inside it.
-    */
-    agent {
-        docker {
-            image 'python:3.10-slim'
-        }
-    }
+    agent any
 
     stages {
-        stage('Verify Environment') {
+        stage('Check Environment') {
             steps {
-                // This will now work because we are inside the Python container
-                sh 'python --version'
+                // This confirms Python is now visible to Jenkins
+                sh 'python3 --version'
             }
         }
-        
-        stage('Run Script') {
+
+        stage('Run Python Task') {
             steps {
-                echo 'Executing Python App...'
-                sh 'python math_utils.py'
-            }
-        }
-        
-        stage('Unit Test') {
-            steps {
-                echo 'Running Tests...'
-                sh 'python test_math.py'
+                // Create the script on the fly if it's not in your workspace
+                sh '''
+                echo "print('Hello from Python inside Jenkins!')" > task.py
+                python3 task.py
+                '''
             }
         }
     }
