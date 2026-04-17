@@ -1,8 +1,10 @@
 import math_utils
 
-def test_add():
-    assert math_utils.add_numbers(2, 3) == 5
-    print("Test Passed!")
+def test_add_function():
+    # We check if 10 + 20 equals 30
+    result = math_utils.add(10, 20)
+    assert result == 30, f"Math error! Expected 30 but got {result}"
+    print("Test Passed: 10 + 20 is 30")
 
 if __name__ == "__main__":
-    test_add()
+    test_add_function()
