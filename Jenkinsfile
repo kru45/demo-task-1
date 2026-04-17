@@ -1,36 +1,33 @@
 pipeline {
-    agent any
+    /* This 'agent' block tells Jenkins to pull a specific 
+       Python image and run all the following stages inside it.
+    */
+    agent {
+        docker {
+            image 'python:3.10-slim'
+        }
+    }
 
     stages {
-        stage('Checkout') {
+        stage('Verify Environment') {
             steps {
-                // If using Git, you'd use 'git url' here. 
-                // For a local test, we'll just print a message.
-                echo 'Pulling code from repository...'
+                // This will now work because we are inside the Python container
+                sh 'python --version'
             }
         }
         
         stage('Run Script') {
             steps {
                 echo 'Executing Python App...'
-                sh 'python3 math_utils.py'
+                sh 'python math_utils.py'
             }
         }
         
         stage('Unit Test') {
             steps {
                 echo 'Running Tests...'
-                sh 'python3 test_math.py'
+                sh 'python test_math.py'
             }
-        }
-    }
-    
-    post {
-        success {
-            echo 'Pipeline completed successfully!'
-        }
-        failure {
-            echo 'Pipeline failed. Check the logs.'
         }
     }
 }
