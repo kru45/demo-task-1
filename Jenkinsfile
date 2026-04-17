@@ -2,20 +2,19 @@ pipeline {
     agent any
 
     stages {
-        stage('Check Environment') {
+        stage('Check Files') {
             steps {
-                // This confirms Python is now visible to Jenkins
-                sh 'python3 --version'
+                echo 'Checking what Jenkins downloaded...'
+                // This lists the files so we can see if math_utils.py exists
+                sh 'ls -la'
             }
         }
-
-        stage('Run Python Task') {
+        
+        stage('Execute Python') {
             steps {
-                // Create the script on the fly if it's not in your workspace
-                sh '''
-                echo "print('Hello from Python inside Jenkins!')" > task.py
-                python3 task.py
-                '''
+                echo 'Running the math script...'
+                // Make sure the filename here matches exactly what is in your GitHub repo
+                sh 'python3 math_utils.py'
             }
         }
     }
